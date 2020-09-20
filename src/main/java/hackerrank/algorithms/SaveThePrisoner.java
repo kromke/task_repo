@@ -1,4 +1,4 @@
-package hackerrank.algorithms.save_the_prisoner;
+package hackerrank.algorithms;
 
 public class SaveThePrisoner {
 

@@ -1,4 +1,6 @@
-package hackerrank.algorithms.save_the_prisoner;
+package hackerrank.algorithms;
+
+import hackerrank.algorithms.SaveThePrisoner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
