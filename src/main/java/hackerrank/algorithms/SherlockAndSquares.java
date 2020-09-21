@@ -14,19 +14,20 @@ public class SherlockAndSquares {
      */
 
     static int squares(int a, int b) {
-        if (a == b)
-            return isFullSquare(a) ? 1 : 0;
         int result = 0;
-        result += isFullSquare(a) ? 1 : 0;
-        result += isFullSquare(b) ? 1 : 0;
-        int floorB = (int)Math.floor(Math.sqrt(b));
-        int ceilA = (int)Math.ceil(Math.sqrt(a));
-        result +=  squares(ceilA, floorB);
+        if (isFullSquare(a))
+            result++;
+        if (b == a)
+            return result;
+
+        int floorB = (int) Math.floor(Math.sqrt(b));
+        int floorA = (int) Math.floor(Math.sqrt(a));
+        result += floorB - floorA == 0 && isFullSquare(b) ? 1 : floorB - floorA;
         return result;
     }
 
     static boolean isFullSquare(int a) {
-        int aInt = (int)Math.sqrt(a);
+        int aInt = (int) Math.sqrt(a);
         return aInt * aInt == a;
     }
 }
