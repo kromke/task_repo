@@ -1,8 +1,6 @@
 package hackerrank.algorithms;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Stream;
 
 /**
  * You are given an unordered array of unique integers incrementing from 1.
@@ -19,14 +17,10 @@ public class LargestPermutation {
      * @return array that represents the highest value permutation that can be formed.
      */
     static int[] largestPermutation(int k, int[] arr) {
-        if (k > arr.length / 2)
-        {
-            return Arrays
-                    .stream(arr)
-                    .boxed()
-                    .sorted(Collections.reverseOrder())
-                    .mapToInt(Integer::intValue)
-                    .toArray();
+        if (k > arr.length) {
+            Arrays.sort(arr);
+
+            return reverse(arr);
         }
         for (int swap = 0; swap < k && swap < arr.length; swap++) {
             int maxValue = arr[swap];
@@ -48,5 +42,13 @@ public class LargestPermutation {
         int temp = arr[first];
         arr[first] = arr[second];
         arr[second] = temp;
+    }
+
+    private static int[] reverse(int[] arr){
+        int[] reversed = new int[arr.length];
+        for (int i = 0, j = arr.length - 1; i < arr.length; i++, j--) {
+            reversed[i] = arr[j];
+        }
+        return reversed;
     }
 }
