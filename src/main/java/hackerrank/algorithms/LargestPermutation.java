@@ -1,9 +1,6 @@
 package hackerrank.algorithms;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
@@ -21,46 +18,6 @@ public class LargestPermutation {
      * @param arr an array of integers.
      * @return array that represents the highest value permutation that can be formed.
      */
-    public static int[] largestPermutation(int k, int[] arr) {
-        class Entry {
-            int index;
-            int value;
-            public Entry(int index, int value) {
-                this.index = index;
-                this.value = value;
-            }
-        }
-        Entry[] entries = new Entry[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            entries[i] = new Entry(i, arr[i]);
-        }
-        Arrays.parallelSort(entries, (o1, o2) -> o2.value - o1.value);
-        for (int j = 0; j < k && j < arr.length; j++) {
-            int index = entries[j].index;
-            if (index == j) {
-                k++;
-                continue;
-            }
-            if (index > k - 1) {
-                arr[index] = entries[index].value;
-            }
-            arr[j] = entries[j].value;
-        }
-
-//        for (int i = 0; i < k && i < arr.length; i++) {
-//            Entry entry = entries[i];
-//            if (entry.index == i) {
-//                k++;
-//                continue;
-//            }
-//            if (entry.index > i)
-//                arr[entry.index] = arr[i];
-//            else arr
-//            arr[i] = entry.value;
-//        }
-        return arr;
-    }
-
 
 //    static int[] largestPermutation(int k, int[] arr) {
 //        for (int swap = 0; swap < k && swap < arr.length; swap++) {
@@ -85,4 +42,26 @@ public class LargestPermutation {
 //        arr[second] = temp;
 //    }
 
+    public static int[] largestPermutation(int k, int[] arr) {
+        NavigableMap<Integer, Integer> treeMap = new TreeMap<>(Collections.reverseOrder());
+        for (int i = 0; i < arr.length; i++) {
+            treeMap.put(arr[i], i);
+        }
+
+        for (int i = 0; i < k; i++) {
+            // получим первый элемент отсортированной мапы
+            Map.Entry<Integer, Integer> entry = treeMap.firstEntry();
+            // сохраним значение до перестановки в массиве по индексу
+            int temp = arr[i];
+            // установим новое значение максимального элемента из мапы
+            arr[i] = entry.getKey();
+            // завершим перестановку в массиве
+            arr[entry.getValue()] = temp;
+            // внесем изменения в мапу
+            treeMap.replace(temp, i, entry.getValue());
+            // отсечем верхушку мапы
+            treeMap = treeMap.tailMap(entry.getKey(), false);
+        }
+        return arr;
+    }
 }
