@@ -12,12 +12,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LargestPermutationTest {
-
+    public static final String LOGFILE = "C:\\Users\\Roman\\Documents\\project\\task_repo\\src\\test\\java\\resouces\\";
+    static Logger log = Logger.getLogger(LargestPermutationTest.class.getName());
+    static {
+        try {
+            log
+                    .addHandler
+                            (new FileHandler(LOGFILE + "log.log"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Test
     void largestPermutationCase1() {
         int[] sourceArray = new int[] {1, 2, 3, 4};
@@ -50,7 +62,7 @@ class LargestPermutationTest {
         int[] arr = null;
         int[] expected = null;
         int k = 0;
-        File inputFile = new File("src/test/java/resouces/LargestPermutationTest_input11.txt");
+        File inputFile = new File("src/test/java/resources/LargestPermutationTest_input11.txt");
         try(BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String[] line = reader.readLine().split(" ");
             k = Integer.parseInt(line[1]);
@@ -67,7 +79,7 @@ class LargestPermutationTest {
                     .mapToInt(Integer::intValue)
                     .toArray();
         }catch (Exception e) {
-            Logger.getLogger("testLog").info(e.getMessage());
+            log.info(e.getMessage());
         }
         int[] actual = LargestPermutation.largestPermutation(k, arr);
         assertArrayEquals(expected, actual);
