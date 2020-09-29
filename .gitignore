@@ -1,3 +1,4 @@
 .idea
 \target
 *.iml
+/log.0.0.txt

@@ -1,7 +1,9 @@
 package hackerrank.algorithms;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
@@ -43,29 +45,60 @@ public class LargestPermutation {
 //    }
 
     public static int[] largestPermutation(int k, int[] arr) {
-        NavigableMap<Integer, Integer> treeMap = new TreeMap<>(Collections.reverseOrder());
-        for (int i = 0; i < arr.length ; i++) {
-            treeMap.put(arr[i], i);
+
+        List<Entry> list = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            list.add(new Entry(arr[i], i));
         }
+        list.sort(((o1, o2) -> o2.value - o1.value));
+
         for (int i = 0; i < k && i < arr.length; i++) {
-            //get higher element
-            Map.Entry<Integer, Integer> entry = treeMap.firstEntry();
+            //get first element
+            Entry entry = list.get(i);
             //if not need swap
-            if (entry.getValue() == i) {
+            if (entry.index == i) {
                 k++;
                 continue;
             }
-            //save element of array before swap
-            int beforeSwap = arr[i];
-            //change element on higher element
-            arr[i] = entry.getKey();
-            //swapping element what we place in index
-            arr[entry.getValue()] = beforeSwap;
-            //change index of swapped element in map
-            treeMap.replace(beforeSwap, i, entry.getValue());
-            //cut head of map
-            treeMap = treeMap.tailMap(entry.getKey(), false);
+                //save swappable element value of array
+                int swappable = arr[i];
+                //change element in array on element from list element
+                arr[i] = entry.value;
+                //
+                int valueSwappableIndex = arr[entry.index];
+                //swap saved element to index
+                arr[entry.index] = swappable;
+                //change index of swapped element in list
+                list.get
+                        (binarySearchReverseOrder(valueSwappableIndex, list, i + 1, list.size() - 1))
+                        .index = entry.index;
         }
+        Arrays.stream(arr).limit(5).forEach(System.out::println);
+        Logger.getLogger(LargestPermutation.class.getName()).info("method exit");
         return arr;
+    }
+
+//    private static int binarySearchReverseOrder(int key, List<Entry> list, int from, int to) {
+//        int result = (from + to) / 2;
+//        if (list.get(result).value == key)
+//            return result;
+//        else if (list.get(result).value > key)
+//            return binarySearchReverseOrder(key, list, from, result);
+//        else return binarySearchReverseOrder(key, list, result, to);
+//    }
+
+    private static class Entry {
+        int value;
+        int index;
+
+        public Entry(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
+
+        @Override
+        public String toString() {
+            return value + "=" + index;
+        }
     }
 }
