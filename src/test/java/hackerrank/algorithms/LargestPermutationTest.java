@@ -21,12 +21,10 @@ class LargestPermutationTest {
     static Logger log;
 
     static {
-//        File file;
-//        try (FileInputStream fileInputStream = new FileInputStream
-//                ("src/main/resources/logging.properties")){
             try{
-                LogManager.getLogManager().readConfiguration(/*fileInputStream*/);
+                LogManager.getLogManager().readConfiguration();
             log = Logger.getLogger(LargestPermutationTest.class.getName());
+                System.out.println(Arrays.stream(log.getHandlers()));
             } catch (IOException e) {
                 e.printStackTrace();
         }

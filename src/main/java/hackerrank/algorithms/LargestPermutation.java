@@ -1,10 +1,7 @@
 package hackerrank.algorithms;
 
-import javax.swing.text.html.parser.Entity;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * You are given an unordered array of unique integers incrementing from 1.
@@ -21,31 +18,9 @@ public class LargestPermutation {
      * @return array that represents the highest value permutation that can be formed.
      */
 
-//    static int[] largestPermutation(int k, int[] arr) {
-//        for (int swap = 0; swap < k && swap < arr.length; swap++) {
-//            int maxValue = arr[swap];
-//            int swapIndex = swap;
-//            for (int i = swap + 1; i < arr.length; i++) {
-//                if (arr[i] > maxValue) {
-//                    maxValue = arr[i];
-//                    swapIndex = i;
-//                }
-//            }
-//            if (maxValue == arr[swap])
-//                k++;
-//            else swap(arr, swap, swapIndex);
-//        }
-//        return arr;
-//    }
-//
-//    private static void swap(int[] arr, int first, int second) {
-//        int temp = arr[first];
-//        arr[first] = arr[second];
-//        arr[second] = temp;
-//    }
-
     public static int[] largestPermutation(int k, int[] arr) {
-
+        if (arr == null)
+            return null;
         List<Entry> list = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
             list.add(new Entry(arr[i], i));
@@ -64,28 +39,27 @@ public class LargestPermutation {
                 int swappable = arr[i];
                 //change element in array on element from list element
                 arr[i] = entry.value;
-                //
-                int valueSwappableIndex = arr[entry.index];
                 //swap saved element to index
                 arr[entry.index] = swappable;
                 //change index of swapped element in list
                 list.get
-                        (binarySearchReverseOrder(valueSwappableIndex, list, i + 1, list.size() - 1))
+                        (binarySearchReverseOrder(swappable, list, i + 1, list.size() - 1))
                         .index = entry.index;
         }
-        Arrays.stream(arr).limit(5).forEach(System.out::println);
-        Logger.getLogger(LargestPermutation.class.getName()).info("method exit");
         return arr;
     }
 
-//    private static int binarySearchReverseOrder(int key, List<Entry> list, int from, int to) {
-//        int result = (from + to) / 2;
-//        if (list.get(result).value == key)
-//            return result;
-//        else if (list.get(result).value > key)
-//            return binarySearchReverseOrder(key, list, from, result);
-//        else return binarySearchReverseOrder(key, list, result, to);
-//    }
+    private static int binarySearchReverseOrder(int key, List<Entry> list, int from, int to) {
+        int result = (from + to) / 2;
+        int value = list.get(result).value;
+        if (value == key)
+            return result;
+        else if (from == to)
+            return -1;
+        else if (value > key)
+            return binarySearchReverseOrder(key, list, result + 1, to);
+        else return binarySearchReverseOrder(key, list, from, result - 1);
+    }
 
     private static class Entry {
         int value;
@@ -94,11 +68,6 @@ public class LargestPermutation {
         public Entry(int value, int index) {
             this.value = value;
             this.index = index;
-        }
-
-        @Override
-        public String toString() {
-            return value + "=" + index;
         }
     }
 }
