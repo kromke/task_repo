@@ -10,7 +10,7 @@ import java.util.Comparator;
 public class TheBestAptitudeTest {
     static class Student {
         private final double gap;
-        private ArrayList<Double> tests = new ArrayList<>(5);
+        private final ArrayList<Double> tests = new ArrayList<>(5);
         private int gapRank;
 
         public Student(double gap) {
